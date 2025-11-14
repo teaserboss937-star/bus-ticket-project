@@ -1,0 +1,14 @@
+{
+  "name": "bus-ticket-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install-all": "npm --prefix backend install && npm --prefix bus install",
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix bus run dev\"",
+    "build": "npm --prefix bus run build",
+    "start": "npm --prefix backend start"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

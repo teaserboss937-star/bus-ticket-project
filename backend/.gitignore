@@ -1,0 +1,44 @@
+# =========================================
+# Global
+# =========================================
+node_modules/
+*.log
+*.tmp
+*.cache
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editor files
+.vscode/
+.idea/
+
+# =========================================
+# Frontend (Vite React) - /bus
+# =========================================
+bus/node_modules/
+bus/dist/
+bus/dist-ssr/
+bus/.vite/
+bus/.eslintcache
+bus/.env
+
+# =========================================
+# Backend (Node.js) - /backend
+# =========================================
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/.env
+
+# Backend cache / temp / debug
+backend/token/
+backend/*.local
+backend/*.log
+
+# PM2 logs (if used)
+backend/logs/
