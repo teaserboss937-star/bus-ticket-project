@@ -8,7 +8,8 @@ import { Toaster } from "react-hot-toast";
 import BusResult from "./common/BusResult";
 import BookingForm from "./Bookings/BookingForm"
 import Login from "./common/Login"
-import MyBooking from "./Bookings/myBooking";
+import MyBooking from "./Bookings/MyBooking.jsx";
+
 import Signup from "./common/Signup";
 import AdminSignup from "./admin/AdminSignup";
 import Adminpanel from "./admin/Adminpanel";
