@@ -11,7 +11,7 @@ import Login from "./common/Login"
 import MyBooking from "./Bookings/MyBooking";
 
 import Signup from "./common/Signup";
-import AdminSignup from "./admin/adminSignup";
+import AdminSignup from "./admin/AdminSignup";
 import Adminpanel from "./admin/Adminpanel";
 import CreatedBus from "./admin/CreatedBus";
 import AdminAllBuses from "./admin/AdminAllBuses";
