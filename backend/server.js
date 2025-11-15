@@ -18,12 +18,16 @@ const PORT = process.env.PORT || 5000;
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",        // Local frontend
-      process.env.FRONTEND_URL       // Render frontend URL
+      "http://localhost:5173",
+      "https://bus-ticket-project-2al8-8jaxndh2w-kengurajs-projects-bdb4b841.vercel.app"
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+
 app.use(cookieParser());
 app.use(express.json());
 
