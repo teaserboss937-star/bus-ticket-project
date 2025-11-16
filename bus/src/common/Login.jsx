@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { BaseUrl } from "../api/BaseUrl";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Lading from "./Lading";
 
  function Login() {
@@ -120,9 +120,10 @@ const handleChange=(e)=>{
 
           <p className="text-sm text-center text-gray-600">
             Don’t have an account?{" "}
-            <a href="/signup" className="text-indigo-600 hover:underline">
+            
+            <Link  to="/signup" className="text-indigo-600 hover:underline">
               Sign up
-            </a>
+            </Link>
           </p>
         </form>
       </motion.div>
