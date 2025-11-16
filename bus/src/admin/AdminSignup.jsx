@@ -101,7 +101,7 @@ function AdminSignup() {
               value={form.username}
               onChange={handleChange}
               className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-              placeholder="admin@example.com"
+              placeholder="admin@example"
               aria-label="username"
             />
           </div>

@@ -45,7 +45,7 @@ function Supportpage() {
       
         <div className="w-full md:w-1/2">
           <img
-            src="kr tavels.jpg" 
+            src="kr-tavels.jpg" 
             alt="Support at KR TRAVELS"
             className="w-full h-full object-cover"
           />
