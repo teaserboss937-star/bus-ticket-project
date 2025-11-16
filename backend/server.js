@@ -19,13 +19,16 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://bus-ticket-project-2al8-8jaxndh2w-kengurajs-projects-bdb4b841.vercel.app"
+      "https://bus-ticket-project-2al8-r5al2ofi5-kengurajs-projects-bdb4b841.vercel.app"
     ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+app.options("*", cors());
+
 
 
 app.use(cookieParser());
