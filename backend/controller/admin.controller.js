@@ -1,4 +1,4 @@
-import { generatedToken } from "../token/generatedToken.js";
+
 import Admin from "../models/admin.js";
 import bcrypt from "bcryptjs";
 import Bus from "../models/bus.js";
