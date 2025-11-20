@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { BaseUrl } from "../api/BaseUrl";
 import { Link, useParams, useLocation } from "react-router-dom";
+import Lading from "./Lading";
 
 function BookingSummary() {
   const { id } = useParams();
@@ -26,30 +27,26 @@ function BookingSummary() {
     enabled: !!id && !localTicket,
   });
 
-  const data = localTicket || ticketData;
+  // FINAL RESPONSE (localTicket or backend response)
+  const response = localTicket || ticketData;
 
-  if (isLoading && !data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600 text-lg">
-        Loading ticket details...
-      </div>
-    );
-  }
+  console.log("FINAL SUMMARY DATA:", response);
 
-  if (isError || !data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-red-600 text-lg">
-        ❌ Failed to load ticket details.
-      </div>
-    );
+  if (!response) return <div><Lading /></div>;
+
+  
+  const booking = response.bookings?.[0];
+
+  if (!booking) {
+    return <div>No booking details found.</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-10">
+    <div className="min-h-screen bg-red-100 pb-10">
       <Navbar />
 
       <div className="max-w-3xl mx-auto mt-10 bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div className="bg-green-600 text-white p-6 text-center">
+        <div className="bg-rose-600 text-white p-6 text-center">
           <CheckCircle className="w-12 h-12 mx-auto mb-3" />
           <h2 className="text-2xl font-semibold">Booking Confirmed!</h2>
           <p className="text-sm text-green-100 mt-1">
@@ -65,14 +62,14 @@ function BookingSummary() {
             </h3>
             <div className="grid grid-cols-2 gap-3 text-gray-700 text-sm">
               <div>
-                <span className="font-medium">Bus ID:</span> {data.busId}
+                <span className="font-medium">Bus ID:</span> {booking.bus}
               </div>
               <div>
-                <span className="font-medium">Travel Date:</span> {data.date}
+                <span className="font-medium">Seat:</span> {booking.seatNumber}
               </div>
               <div>
-                <span className="font-medium">Total Fare:</span> ₹
-                {data.totalPrice}
+                <span className="font-medium">Price:</span> ₹
+                {booking.price || booking.totalPrice}
               </div>
             </div>
           </section>
@@ -82,19 +79,19 @@ function BookingSummary() {
             <h3 className="text-lg font-semibold text-gray-800 mb-3">
               Passenger Information
             </h3>
+
             <div className="space-y-2 text-gray-700 text-sm">
-              {data.passengers?.map((p, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <User size={16} />
-                  {p.passengerName} ({p.passengerAge} yrs) — Seat{" "}
-                  {p.seatNumber}
-                </div>
-              ))}
               <div className="flex items-center gap-2">
-                <Phone size={16} /> {data.phoneNumber}
+                <User size={16} />
+                {booking.passengerName} ({booking.passengerAge} yrs)
               </div>
+
               <div className="flex items-center gap-2">
-                <Mail size={16} /> {data.email}
+                <Phone size={16} /> {booking.phoneNumber}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Mail size={16} /> {booking.email}
               </div>
             </div>
           </section>
@@ -104,15 +101,15 @@ function BookingSummary() {
             <h3 className="text-lg font-semibold text-gray-800 mb-3">
               Trip Information
             </h3>
+
             <div className="flex flex-col gap-4 text-gray-700 text-sm">
               <div className="flex items-start gap-3">
                 <MapPin className="text-blue-600 mt-1" size={18} />
                 <div>
                   <p className="font-medium text-gray-800">Pickup Location</p>
-                  <p>{data.pickupLocation}</p>
+                  <p>{booking.pickupLocation}</p>
                   <p className="flex items-center gap-1 mt-1 text-gray-500">
-                    <Clock size={14} />
-                    {data.pickupTime}
+                    <Clock size={14} /> {booking.pickupTime}
                   </p>
                 </div>
               </div>
@@ -121,21 +118,17 @@ function BookingSummary() {
                 <MapPin className="text-red-500 mt-1" size={18} />
                 <div>
                   <p className="font-medium text-gray-800">Drop Location</p>
-                  <p>{data.dropLocation}</p>
+                  <p>{booking.dropLocation}</p>
                   <p className="flex items-center gap-1 mt-1 text-gray-500">
-                    <Clock size={14} />
-                    {data.dropTime}
+                    <Clock size={14} /> {booking.dropTime}
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Buttons */}
-          <div className="flex justify-end gap-3 mt-6">
-            <button className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-sm font-medium">
-              Download Ticket
-            </button>
+         
+            <div>
             <Link to="/">
               <button className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium">
                 Back to Home

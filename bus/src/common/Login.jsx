@@ -20,15 +20,16 @@ const {mutate:log,isPending,isError,error}=useMutation({
 mutationFn:async({username,password})=>{
     try{
 const res=await axios.post(`${BaseUrl}/api/auth/login`,{username,password},{withCredentials:true})
-res.data
+ return res.data
     }catch(error){
 throw error
     }
 },
 onSuccess:()=>{
     toast.success("login succesfult")
-    nagivate("/")
+  
     queryClient.invalidateQueries({queryKey:["authUser"]})
+      nagivate("/")
 },
 onError:()=>{
     toast.error(console.log(error))

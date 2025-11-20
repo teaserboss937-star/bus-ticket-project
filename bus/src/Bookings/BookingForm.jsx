@@ -10,6 +10,8 @@ import Lading from "../common/Lading";
 function BookingForm() {
   const location = useLocation();
   const navigate = useNavigate();
+  
+
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
   const bookingData = location.state;
@@ -61,21 +63,22 @@ function BookingForm() {
   const { mutate: bookTicket, isPending } = useMutation({
     mutationKey: ["bookTicket"],
     mutationFn: async (payload) => {
+      
       const res = await axios.post(`${BaseUrl}/api/bus/ticket`, payload, {
         withCredentials: true,
       });
       return res.data;
     },
     onSuccess: (data) => {
+      
       toast.success("🎉 Booking successful!");
 
       const ticketId =
-        data?._id ||
-        data?.ticketId ||
-        data?.ticket?._id ||
-        data?.data?._id ||
-        data?.data?.ticketId;
-
+        data?.bookings?.[0]?._id ||
+  data?._id ||
+  data?.ticketId ||
+  data?.ticket?._id;
+     
       if (ticketId) {
         navigate(`/book/${ticketId}`, {
           state: {
@@ -94,16 +97,19 @@ function BookingForm() {
             selectedSeats,
           },
         });
+      
+
       } else {
         navigate("/mybooking");
       }
     },
-    onError: (error) => {
-      toast.error(
-        " Booking failed! " +
-          (error.response?.data?.message || "Please try again.")
-      );
-    },
+  onError: (error) => {
+    console.log("BOOKING ERROR:", error.response?.data || error.message);
+    toast.error(
+      " Booking failed! " +
+        (error.response?.data?.message || "Please try again.")
+    );
+},
   });
 
   const handlePassengerChange = (index, field, value) => {
@@ -114,6 +120,7 @@ function BookingForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  
 
     if (passengers.some((p) => !p.passengerName || !p.passengerAge)) {
       return toast.error("Please fill in all passenger details.");
@@ -122,6 +129,7 @@ function BookingForm() {
     if (!contactInfo.phoneNumber || !contactInfo.email) {
       return toast.error("Please provide valid contact information.");
     }
+  
 
     const payload = {
       busId,

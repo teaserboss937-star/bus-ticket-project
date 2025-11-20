@@ -3,7 +3,7 @@ import Admin from "../models/admin.js";
 import bcrypt from "bcryptjs";
 import Bus from "../models/bus.js";
 import Booking from "../models/Booking.js"
-
+import { generatedAdminToken } from "../token/generatedAdminToken.js";
 
 export const signupadmin = async (req, res) => {
   try {
@@ -27,7 +27,7 @@ export const signupadmin = async (req, res) => {
     });
     await newAdmin.save();
 
-    generatedToken(newAdmin._id, res);
+    generatedAdminToken(newAdmin._id, res);
 
     res.status(201).json({
       _id: newAdmin._id,
@@ -51,7 +51,7 @@ if(!admin || !ispassword){
   return res.status(400).json({error:"invaild adminname or password"})
 }
 
-generatedToken(admin._id,res)
+generatedAdminToken(admin._id,res)
 
 res.status(200).json({
   _id:admin._id,
@@ -64,15 +64,24 @@ res.status(200).json({
 }
 }
 
-export const logout =async(req,res)=>{
-  try{
-res.cookie("jwt","",{maxAge:0})
-res.status(200).json({message:"adminlogout successfuly"})
-  }catch(error){
-    console.error("error in logout page",error.message)
-  res.status(500).json({error:"invaild server"})
+export const logout = async (req, res) => {
+  try {
+    // Clear admin token cookie
+    res.cookie("adminjwt", "", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path:"/",
+      maxAge: 0,
+    });
+
+    res.status(200).json({ message: "Admin logout successfully" });
+  } catch (error) {
+    console.error("Error in logout:", error.message);
+    res.status(500).json({ error: "Invalid server error" });
   }
-}
+};
+
 
 export const Admingetme=async(req,res)=>{
   try{

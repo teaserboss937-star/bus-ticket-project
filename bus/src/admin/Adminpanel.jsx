@@ -109,6 +109,21 @@ function Adminpanel() {
   const cancelledCount = bookings.filter((b) => b.status === "cancelled").length;
   const completedCount = bookings.filter((b) => b.status === "completed").length;
 
+const logoutAdmin = async () => {
+  try {
+    await axios.post(
+      "http://localhost:5000/api/admin/adminlogout",
+      {},
+      { withCredentials: true }
+    );
+    navigate("/");
+  } catch (error) {
+    console.error("Logout error", error);
+    navigate("/");
+  }
+};
+
+
   return (
     <div className="min-h-screen flex bg-gray-50">
       {/* Sidebar */}
@@ -287,12 +302,13 @@ function Adminpanel() {
 
         {/* Back to Home */}
         <div className="text-center mt-6">
-          <button
-            onClick={() => navigate("/")}
-            className="bg-[#d84e55] text-white px-4 py-2 rounded-lg hover:bg-[#c13f46] transition"
-          >
-            Back to Home
-          </button>
+         <button
+  onClick={logoutAdmin}
+  className="bg-[#d84e55] text-white px-4 py-2 rounded-lg hover:bg-[#c13f46] transition"
+>
+  Logout & Go Home
+</button>
+
         </div>
       </main>
     </div>
