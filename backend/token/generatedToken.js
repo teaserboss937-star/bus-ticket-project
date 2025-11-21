@@ -10,6 +10,7 @@ export const generatedToken=(userId,res)=>{
         httpOnly:true,
        secure: true,         
     sameSite: "none", 
+       path: "/",
          maxAge:15*24*60*60*1000,
         
     })
