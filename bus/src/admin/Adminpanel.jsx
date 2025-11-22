@@ -84,7 +84,7 @@ function Adminpanel() {
     }
   };
 
-  //  Initial fetch
+  
   useEffect(() => {
     fetchBookings();
     fetchBuses();

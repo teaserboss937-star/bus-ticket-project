@@ -3,7 +3,7 @@ import Admin from "../models/admin.js";
 import bcrypt from "bcryptjs";
 import Bus from "../models/bus.js";
 import Booking from "../models/Booking.js"
-import { generatedAdminToken } from "../token/generatedAdminToken.js";
+import { generatedToken } from "../token/generatedToken.js";
 
 export const signupadmin = async (req, res) => {
   try {
@@ -12,89 +12,66 @@ export const signupadmin = async (req, res) => {
     if (!username || !password) {
       return res.status(400).json({ error: "Username and password are required" });
     }
-    const existingUser = await Admin.findOne({ username });
-    if (existingUser) {
+
+    const existingAdmin = await Admin.findOne({ username });
+    if (existingAdmin) {
       return res.status(400).json({ error: "Admin username already exists" });
     }
+
     if (password.length < 6) {
       return res.status(400).json({ error: "Password must be at least 6 characters long" });
     }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newAdmin = new Admin({
       username,
       password: hashedPassword,
+      role: "admin",
     });
+
     await newAdmin.save();
 
-    generatedAdminToken(newAdmin._id, res);
+    generatedToken(newAdmin._id, newAdmin.role, res);
 
     res.status(201).json({
       _id: newAdmin._id,
       username: newAdmin.username,
+      role: newAdmin.role,
       message: "Admin registered successfully",
     });
-
   } catch (error) {
     console.error("Error in admin signup:", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-export const login =async(req,res)=>{
-try{
-const {username,password}=req.body
-const admin=await Admin.findOne({username})
-const ispassword=await bcrypt.compare(password, admin?.password || "")
-
-if(!admin || !ispassword){
-  return res.status(400).json({error:"invaild adminname or password"})
-}
-
-generatedAdminToken(admin._id,res)
-
-res.status(200).json({
-  _id:admin._id,
-  username:admin.username,
-
-})
-}catch(error){
-  console.error("error in adminlogin page",error.message)
-  res.status(500).json({error:"invaild server"})
-}
-}
-
-export const logout = async (req, res) => {
+export const loginAdmin = async (req, res) => {
   try {
-    // Clear admin token cookie
-    res.cookie("adminjwt", "", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path:"/",
-      maxAge: 0,
-    });
+    const { username, password } = req.body;
 
-    res.status(200).json({ message: "Admin logout successfully" });
+    const admin = await Admin.findOne({ username });
+    if (!admin) {
+      return res.status(400).json({ error: "Invalid admin username or password" });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, admin.password);
+    if (!isPasswordMatch) {
+      return res.status(400).json({ error: "Invalid admin username or password" });
+    }
+
+    generatedToken(admin._id, admin.role, res);
+
+    res.status(200).json({
+      _id: admin._id,
+      username: admin.username,
+      role: admin.role,
+    });
   } catch (error) {
-    console.error("Error in logout:", error.message);
-    res.status(500).json({ error: "Invalid server error" });
+    console.error("Error in admin login:", error.message);
+    res.status(500).json({ error: "Server error during admin login" });
   }
 };
-
-
-export const Admingetme=async(req,res)=>{
-  try{
-const admin=await Admin.findById(req.admin._id).select("-password")
-if(!admin){
-  return res.status(400).json({error:"admin not found"})
-}
-res.status(200).json(admin)
-  }catch(error){
- console.error("error in getme page",error.message)
-  res.status(500).json({error:"invaild server"})
-  }
-}
 
 export const createBus = async (req, res) => {
   try {

@@ -24,8 +24,9 @@ function AdminSignup() {
     },
     onSuccess: () => {
       toast.success("Login successful!");
-      nagivate("/adminpanel")
-      queryclient.invalidateQueries({queryKey:["adminUser"]})
+   
+      queryclient.invalidateQueries({queryKey:["authUser"]})
+         nagivate("/adminpanel")
     },
     onError: (err) => {
       toast.error(err.response?.data?.message || "Login failed");

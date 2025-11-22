@@ -321,38 +321,10 @@ function BookingForm() {
           </form>
         </div>
 
-        {/* === Right: Fare Summary === */}
-        <div className="md:col-span-1">
-          <div className="sticky top-6 bg-white border border-gray-100 shadow-lg rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">
-              Fare Summary
-            </h3>
-
-            <div className="space-y-2 text-sm text-gray-700">
-              {selectedSeats.map((seat, idx) => (
-                <div key={idx} className="flex justify-between">
-                  <span>Seat {seat.number}</span>
-                  <span>₹{seat.price}</span>
-                </div>
-              ))}
-              <hr className="my-2" />
-              <div className="flex justify-between font-semibold text-gray-900">
-                <span>Total Fare</span>
-                <span>₹{totalPrice}</span>
-              </div>
-            </div>
-
-            <button
-              onClick={handleSendTicketCopy}
-              className="mt-6 w-full flex items-center justify-center gap-2 bg-[#d84e55] text-white py-2 rounded-xl hover:bg-[#c13e45] transition"
-            >
-              <Send size={16} />
-              Send Ticket Copy
-            </button>
-          </div>
+       
         </div>
       </div>
-    </div>
+  
   );
 }
 
